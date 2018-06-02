@@ -200,6 +200,11 @@ activity.mean.merge.trsn.order.grp
 
 - Calculate mean and meadian based on imputed values
 
+```r
+activity.mean.merge.trsn.order.grp.summary<-summary(activity.mean.merge.trsn.order.grp)
+activity.mean.merge.trsn.order.grp.summary
+```
+
 ```
 ##          date       new_sum     
 ##  2012-10-01: 1   Min.   :   41  
@@ -210,6 +215,11 @@ activity.mean.merge.trsn.order.grp
 ##  2012-10-06: 1   Max.   :21194  
 ##  (Other)   :55
 ```
+
+```r
+imp_mean<-activity.mean.merge.trsn.order.grp.summary[4,2]
+imp_median<-activity.mean.merge.trsn.order.grp.summary[3,2]
+```
 - Mean   :10766  ,Median :10766  . 
 
 - Mean with NA is Mean   :10766   & with imputed value is Mean   :10766  
@@ -219,6 +229,9 @@ activity.mean.merge.trsn.order.grp
 
 - Get day from date
 
+```r
+activity.mean.merge.trsn.order.wday<-mutate(activity.mean.merge.trsn.order,weekdays=weekdays(as.POSIXlt(activity.mean.merge.trsn.order$date)))
+```
 
 - Differenciate the data based on week day or not  
 
@@ -271,6 +284,11 @@ head(activity.mean.merge.trsn.order.wday.all)
 
 - Group data set by weekday/weekend flag and by interval and get average steps based on imputed column
 
+```r
+activity.mean.merge.trsn.order.wday.all.avgstep<-group_by(activity.mean.merge.trsn.order.wday.all,interval,weekend)%>%summarise(avg_time=mean(steps1))
+head(activity.mean.merge.trsn.order.wday.all.avgstep)
+```
+
 ```
 ## # A tibble: 6 x 3
 ## # Groups:   interval [3]
@@ -285,6 +303,11 @@ head(activity.mean.merge.trsn.order.wday.all)
 ```
 
 - Draw a graph shows interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
+
+```r
+qplot(data=activity.mean.merge.trsn.order.wday.all.avgstep,interval,avg_time,facets = weekend~.,geom=c("line"))
+```
+
 ![plot of chunk time series plotwith weekday and weekend factes](figure/time series plotwith weekday and weekend factes-1.png)
 
 
